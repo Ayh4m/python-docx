@@ -27,6 +27,14 @@ class CT_P(BaseOxmlElement):
         self.addprevious(new_p)
         return new_p
 
+    def add_p_after(self):
+        """
+        Return a new ``<w:p>`` element inserted directly next to this one.
+        """
+        new_p = OxmlElement('w:p')
+        self.addnext(new_p)
+        return new_p
+
     @property
     def alignment(self):
         """
