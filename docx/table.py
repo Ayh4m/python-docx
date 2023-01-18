@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from .blkcntnr import BlockItemContainer
 from .enum.style import WD_STYLE_TYPE
+from .enum.text import WD_PARAGRAPH_ALIGNMENT
 from .oxml.simpletypes import ST_Merge
 from .shared import Inches, lazyproperty, Parented
 
@@ -221,6 +222,15 @@ class _Cell(BlockItemContainer):
         table = super(_Cell, self).add_table(rows, cols, width)
         self.add_paragraph()
         return table
+
+    def add_picture(self, image_path_or_stream, width=None, height=None, at_first=False,
+                    space_after=Inches(0), alignment=WD_PARAGRAPH_ALIGNMENT.LEFT):
+        paragraph = self.paragraphs[0].insert_paragraph_before() if at_first else self.add_paragraph()
+        run = paragraph.add_run()
+        run.add_picture(image_path_or_stream, width=width, height=height)
+        paragraph.paragraph_format.space_after = space_after
+        paragraph.paragraph_format.alignment = alignment
+        return paragraph
 
     def merge(self, other_cell):
         """
