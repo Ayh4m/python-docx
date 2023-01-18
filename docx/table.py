@@ -238,6 +238,19 @@ class _Cell(BlockItemContainer):
         border.val, border.sz, border.space, border.color = style, str(size), space, color
         return border
 
+    def adjust_paragraphs_spacing(self, space_after=None, space_before=None):
+        for paragraph in self.paragraphs:
+            paragraph.paragraph_format.space_after = space_after
+            paragraph.paragraph_format.space_before = space_before
+
+    def remove_first_paragraph(self):
+        if self.paragraphs:
+            self.paragraphs[0].remove()
+
+    def remove_last_paragraph(self):
+        if self.paragraphs:
+            self.paragraphs[-1].remove()
+
     def merge(self, other_cell):
         """
         Return a merged cell created by spanning the rectangular region
