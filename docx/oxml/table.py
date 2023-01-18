@@ -12,7 +12,7 @@ from ..exceptions import InvalidSpanError
 from .ns import nsdecls, qn
 from ..shared import Emu, Twips
 from .simpletypes import (
-    ST_Merge, ST_TblLayoutType, ST_TblWidth, ST_TwipsMeasure, XsdInt
+    ST_Merge, ST_TblLayoutType, ST_TblWidth, ST_TwipsMeasure, XsdInt, ST_String
 )
 from .xmlchemy import (
     BaseOxmlElement, OneAndOnlyOne, OneOrMore, OptionalAttribute,
@@ -892,3 +892,48 @@ class CT_VMerge(BaseOxmlElement):
     ``<w:vMerge>`` element, specifying vertical merging behavior of a cell.
     """
     val = OptionalAttribute('w:val', ST_Merge, default=ST_Merge.CONTINUE)
+
+
+class CT_TcBorders(BaseOxmlElement):
+    """
+    <w:tcBorders> element
+    """
+    top = ZeroOrOne('w:top')
+    start = ZeroOrOne('w:start')
+    bottom = ZeroOrOne('w:bottom')
+    end = ZeroOrOne('w:end')
+
+
+class CT_TcBorder(BaseOxmlElement):
+    val = OptionalAttribute('w:val', ST_String)
+    sz = OptionalAttribute('w:sz', ST_String)
+    space = OptionalAttribute('w:space', ST_String)
+    color = OptionalAttribute('w:color', ST_String)
+
+
+class CT_TcTopBorder(CT_TcBorder):
+    """
+    ``<w:top>`` element, defining cell top border properties
+    """
+    pass
+
+
+class CT_TcBottomBorder(CT_TcBorder):
+    """
+    ``<w:bottom>`` element, defining cell bottom border properties
+    """
+    pass
+
+
+class CT_TcLeftBorder(CT_TcBorder):
+    """
+    ``<w:start>`` element, defining cell left border properties
+    """
+    pass
+
+
+class CT_TcRightBorder(CT_TcBorder):
+    """
+    ``<w:end>`` element, defining cell right border properties
+    """
+    pass
