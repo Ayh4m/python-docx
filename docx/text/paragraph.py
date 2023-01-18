@@ -168,3 +168,9 @@ class Paragraph(Parented):
 
     def remove(self):
         self._p.getparent().remove(self._p)
+
+    def insert_element_before(self, element):
+        """
+        Insert element directly before this paragraph.
+        """
+        self._p.addprevious(element._element)
