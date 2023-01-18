@@ -143,3 +143,6 @@ class Paragraph(Parented):
         """
         p = self._p.add_p_before()
         return Paragraph(p, self._parent)
+
+    def remove(self):
+        self._p.getparent().remove(self._p)
