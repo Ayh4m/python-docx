@@ -90,6 +90,16 @@ class Paragraph(Parented):
             paragraph.style = style
         return paragraph
 
+    def insert_customized_paragraph_before(self, text, font_name=None, font_size=None, font_color=None,
+                                           bold=None, italic=None, underline=None):
+        """
+        Return a newly created paragraph with a single customized run,
+        inserted directly before this paragraph.
+        """
+        paragraph = self._insert_paragraph_before()
+        paragraph.add_run(text).customize(font_name, font_size, font_color, bold, italic, underline)
+        return paragraph
+
     @property
     def paragraph_format(self):
         """

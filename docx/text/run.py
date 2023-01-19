@@ -181,10 +181,10 @@ class Run(Parented):
     def underline(self, value):
         self.font.underline = value
 
-    def customize(self, font_name="Arial", font_size=11, font_color=(0, 0, 0), bold=None, italic=None, underline=None):
+    def customize(self, font_name=None, font_size=None, font_color=None, bold=None, italic=None, underline=None):
         self.font.name = font_name
-        self.font.size = Pt(font_size)
-        self.font.color.rgb = RGBColor(*font_color)
+        self.font.size = Pt(font_size) if isinstance(font_size, int) else None
+        self.font.color.rgb = RGBColor(*font_color) if isinstance(font_color, tuple) else None
         self.font.bold = bold
         self.font.italic = italic
         self.font.underline = underline
