@@ -10,7 +10,7 @@ from ..enum.style import WD_STYLE_TYPE
 from ..enum.text import WD_BREAK
 from .font import Font
 from ..shape import InlineShape
-from ..shared import Parented
+from ..shared import Parented, Pt, RGBColor
 
 
 class Run(Parented):
@@ -180,6 +180,15 @@ class Run(Parented):
     @underline.setter
     def underline(self, value):
         self.font.underline = value
+
+    def customize(self, font_name=None, font_size=None, font_color=None, bold=None, italic=None, underline=None):
+        self.font.name = font_name
+        self.font.size = Pt(font_size) if isinstance(font_size, int) else None
+        self.font.color.rgb = RGBColor(*font_color) if isinstance(font_color, tuple) else None
+        self.font.bold = bold
+        self.font.italic = italic
+        self.font.underline = underline
+        return self
 
 
 class _Text(object):

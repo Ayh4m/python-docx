@@ -76,6 +76,30 @@ class Paragraph(Parented):
             paragraph.style = style
         return paragraph
 
+    def insert_paragraph_after(self, text=None, style=None):
+        """
+        Return a newly created paragraph, inserted directly after this
+        paragraph. If *text* is supplied, the new paragraph contains that
+        text in a single run. If *style* is provided, that style is assigned
+        to the new paragraph.
+        """
+        paragraph = self._insert_paragraph_after()
+        if text:
+            paragraph.add_run(text)
+        if style is not None:
+            paragraph.style = style
+        return paragraph
+
+    def insert_customized_paragraph_before(self, text, font_name=None, font_size=None, font_color=None,
+                                           bold=None, italic=None, underline=None):
+        """
+        Return a newly created paragraph with a single customized run,
+        inserted directly before this paragraph.
+        """
+        paragraph = self._insert_paragraph_before()
+        paragraph.add_run(text).customize(font_name, font_size, font_color, bold, italic, underline)
+        return paragraph
+
     @property
     def paragraph_format(self):
         """
@@ -143,3 +167,20 @@ class Paragraph(Parented):
         """
         p = self._p.add_p_before()
         return Paragraph(p, self._parent)
+
+    def _insert_paragraph_after(self):
+        """
+        Return a newly created paragraph, inserted directly after this
+        paragraph.
+        """
+        p = self._p.add_p_after()
+        return Paragraph(p, self._parent)
+
+    def remove(self):
+        self._p.getparent().remove(self._p)
+
+    def insert_element_before(self, element):
+        """
+        Insert element directly before this paragraph.
+        """
+        self._p.addprevious(element._element)

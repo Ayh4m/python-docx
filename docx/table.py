@@ -232,6 +232,25 @@ class _Cell(BlockItemContainer):
         paragraph.paragraph_format.alignment = alignment
         return paragraph
 
+    def add_border(self, position, size="4", style="single", color="000000", space="0"):
+        mapping = {"top": "top", "bottom": "bottom", "left": "start", "right": "end"}
+        border = getattr(self._tc.get_or_add_tcPr().get_or_add_tcBorders(), f"get_or_add_{mapping[position]}")()
+        border.val, border.sz, border.space, border.color = style, str(size), space, color
+        return border
+
+    def adjust_paragraphs_spacing(self, space_after=None, space_before=None):
+        for paragraph in self.paragraphs:
+            paragraph.paragraph_format.space_after = space_after
+            paragraph.paragraph_format.space_before = space_before
+
+    def remove_first_paragraph(self):
+        if self.paragraphs:
+            self.paragraphs[0].remove()
+
+    def remove_last_paragraph(self):
+        if self.paragraphs:
+            self.paragraphs[-1].remove()
+
     def merge(self, other_cell):
         """
         Return a merged cell created by spanning the rectangular region
