@@ -246,6 +246,10 @@ class _Cell(BlockItemContainer):
             paragraph.paragraph_format.space_after = space_after
             paragraph.paragraph_format.space_before = space_before
 
+    def adjust_paragraphs_indentation(self, left_indent=None):
+        for paragraph in self.paragraphs:
+            paragraph.paragraph_format.left_indent = left_indent
+
     def remove_first_paragraph(self):
         if self.paragraphs:
             self.paragraphs[0].remove()
