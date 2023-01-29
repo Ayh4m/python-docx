@@ -10,7 +10,7 @@ from .blkcntnr import BlockItemContainer
 from .enum.style import WD_STYLE_TYPE
 from .enum.text import WD_PARAGRAPH_ALIGNMENT
 from .oxml.simpletypes import ST_Merge
-from .shared import Inches, lazyproperty, Parented
+from .shared import Inches, Pt, lazyproperty, Parented
 
 
 class Table(Parented):
@@ -224,17 +224,20 @@ class _Cell(BlockItemContainer):
         return table
 
     def add_picture(self, image_path_or_stream, width=None, height=None, at_first=False,
-                    space_after=Inches(0), alignment=WD_PARAGRAPH_ALIGNMENT.LEFT):
-        paragraph = self.paragraphs[0].insert_paragraph_before() if at_first else self.add_paragraph()
-        run = paragraph.add_run()
-        run.add_picture(image_path_or_stream, width=width, height=height)
+                    space_after=Pt(0), space_before=Pt(0), left_indent=Inches(0),
+                    alignment=WD_PARAGRAPH_ALIGNMENT.CENTER):
+        paragraph = self.paragraphs[0].insert_paragraph_before() \
+            if (at_first and self.paragraphs) else self.add_paragraph()
+        paragraph.add_run().add_picture(image_path_or_stream, width=width, height=height)
         paragraph.paragraph_format.space_after = space_after
+        paragraph.paragraph_format.space_before = space_before
+        paragraph.paragraph_format.left_indent = left_indent
         paragraph.paragraph_format.alignment = alignment
         return paragraph
 
     def add_border(self, position, size="4", style="single", color="000000", space="0"):
         mapping = {"top": "top", "bottom": "bottom", "left": "start", "right": "end"}
-        border = getattr(self._tc.tcPr.get_or_add_tcBorders(), f"get_or_add_{mapping[position]}")()
+        border = getattr(self._tc.get_or_add_tcPr().get_or_add_tcBorders(), f"get_or_add_{mapping[position]}")()
         border.val, border.sz, border.space, border.color = style, str(size), space, color
         return border
 
