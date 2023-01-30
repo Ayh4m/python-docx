@@ -760,9 +760,10 @@ class CT_TcPr(BaseOxmlElement):
     )
     tcW = ZeroOrOne('w:tcW', successors=_tag_seq[2:])
     gridSpan = ZeroOrOne('w:gridSpan', successors=_tag_seq[3:])
+    tcBorders = ZeroOrOne('w:tcBorders', successors=_tag_seq[6:])
+    shading = ZeroOrOne('w:shd', successors=_tag_seq[7:])
     vMerge = ZeroOrOne('w:vMerge', successors=_tag_seq[5:])
     vAlign = ZeroOrOne('w:vAlign', successors=_tag_seq[12:])
-    tcBorders = ZeroOrOne('w:tcBorders')
     del _tag_seq
 
     @property
@@ -833,6 +834,18 @@ class CT_TcPr(BaseOxmlElement):
     def width(self, value):
         tcW = self.get_or_add_tcW()
         tcW.width = value
+
+    @property
+    def shading_fill(self):
+        shading = self.shading
+        if shading is None:
+            return None
+        return self.shading.fill
+
+    @shading_fill.setter
+    def shading_fill(self, value):
+        shading = self.get_or_add_shading()
+        shading.fill = value
 
 
 class CT_TrPr(BaseOxmlElement):
@@ -938,3 +951,9 @@ class CT_TcRightBorder(CT_TcBorder):
     ``<w:end>`` element, defining cell right border properties
     """
     pass
+
+
+class CT_Shd(BaseOxmlElement):
+    val = OptionalAttribute('w:val', ST_String)
+    color = OptionalAttribute('w:color', ST_String)
+    fill = OptionalAttribute('w:fill', ST_String)

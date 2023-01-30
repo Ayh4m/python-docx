@@ -241,6 +241,9 @@ class _Cell(BlockItemContainer):
         border.val, border.sz, border.space, border.color = style, str(size), space, color
         return border
 
+    def add_shading(self, fill_color):
+        self._tc.get_or_add_tcPr().shading_fill = fill_color
+
     def adjust_paragraphs_spacing(self, space_after=None, space_before=None):
         for paragraph in self.paragraphs:
             paragraph.paragraph_format.space_after = space_after
@@ -250,13 +253,20 @@ class _Cell(BlockItemContainer):
         for paragraph in self.paragraphs:
             paragraph.paragraph_format.left_indent = left_indent
 
-    def remove_first_paragraph(self):
+    def remove_paragraph(self, idx):
         if self.paragraphs:
-            self.paragraphs[0].remove()
+            try:
+                paragraph = self.paragraphs[idx]
+            except IndexError:
+                print(f"Max 'idx' is {len(self.paragraphs) - 1}")
+            else:
+                paragraph.remove()
+
+    def remove_first_paragraph(self):
+        self.remove_paragraph(0)
 
     def remove_last_paragraph(self):
-        if self.paragraphs:
-            self.paragraphs[-1].remove()
+        self.remove_paragraph(-1)
 
     def merge(self, other_cell):
         """
