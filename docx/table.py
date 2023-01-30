@@ -239,10 +239,10 @@ class _Cell(BlockItemContainer):
         mapping = {"top": "top", "bottom": "bottom", "left": "start", "right": "end"}
         border = getattr(self._tc.get_or_add_tcPr().get_or_add_tcBorders(), f"get_or_add_{mapping[position]}")()
         border.val, border.sz, border.space, border.color = style, str(size), space, str(RGBColor(*color))
-        return border
 
     def add_shading(self, fill_color):
-        self._tc.get_or_add_tcPr().shading_fill = str(RGBColor(*fill_color))
+        shading = self._tc.get_or_add_tcPr().get_or_add_shading()
+        shading.val, shading.color, shading.fill = "clear", "auto", str(RGBColor(*fill_color))
 
     def adjust_paragraphs_spacing(self, space_after=None, space_before=None):
         for paragraph in self.paragraphs:
@@ -343,6 +343,14 @@ class _Cell(BlockItemContainer):
     @width.setter
     def width(self, value):
         self._tc.width = value
+
+    @property
+    def shading_fill(self):
+        return self._tc.get_or_add_tcPr().shading_fill
+
+    @shading_fill.setter
+    def shading_fill(self, value):
+        self._tc.get_or_add_tcPr().shading_fill = str(RGBColor(*value))
 
 
 class _Column(Parented):
