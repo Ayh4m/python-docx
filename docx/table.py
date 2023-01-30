@@ -10,7 +10,7 @@ from .blkcntnr import BlockItemContainer
 from .enum.style import WD_STYLE_TYPE
 from .enum.text import WD_PARAGRAPH_ALIGNMENT
 from .oxml.simpletypes import ST_Merge
-from .shared import Inches, Pt, lazyproperty, Parented
+from .shared import Inches, Pt, RGBColor, lazyproperty, Parented
 
 
 class Table(Parented):
@@ -235,14 +235,14 @@ class _Cell(BlockItemContainer):
         paragraph.paragraph_format.alignment = alignment
         return paragraph
 
-    def add_border(self, position, size="4", style="single", color="000000", space="0"):
+    def add_border(self, position, size="4", style="single", color=(0, 0, 0), space="0"):
         mapping = {"top": "top", "bottom": "bottom", "left": "start", "right": "end"}
         border = getattr(self._tc.get_or_add_tcPr().get_or_add_tcBorders(), f"get_or_add_{mapping[position]}")()
-        border.val, border.sz, border.space, border.color = style, str(size), space, color
+        border.val, border.sz, border.space, border.color = style, str(size), space, str(RGBColor(*color))
         return border
 
     def add_shading(self, fill_color):
-        self._tc.get_or_add_tcPr().shading_fill = fill_color
+        self._tc.get_or_add_tcPr().shading_fill = str(RGBColor(*fill_color))
 
     def adjust_paragraphs_spacing(self, space_after=None, space_before=None):
         for paragraph in self.paragraphs:
