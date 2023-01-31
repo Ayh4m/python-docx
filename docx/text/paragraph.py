@@ -98,12 +98,15 @@ class Paragraph(Parented):
         inserted directly before this paragraph.
         """
         paragraph = self._insert_paragraph_before()
-        paragraph.paragraph_format.space_after = space_after
-        paragraph.paragraph_format.space_before = space_before
-        paragraph.paragraph_format.left_indent = left_indent
-        paragraph.paragraph_format.alignment = alignment
         paragraph.add_run(text).customize(font_name, font_size, font_color, bold, italic, underline)
+        paragraph.quick_format(space_after, space_before, left_indent, alignment)
         return paragraph
+
+    def quick_format(self, space_after=None, space_before=None, left_indent=None, alignment=None):
+        self.paragraph_format.space_after = space_after
+        self.paragraph_format.space_before = space_before
+        self.paragraph_format.left_indent = left_indent
+        self.paragraph_format.alignment = alignment
 
     @property
     def paragraph_format(self):
@@ -181,11 +184,11 @@ class Paragraph(Parented):
         p = self._p.add_p_after()
         return Paragraph(p, self._parent)
 
-    def remove(self):
-        self._p.getparent().remove(self._p)
-
     def insert_element_before(self, element):
         """
         Insert element directly before this paragraph.
         """
         self._p.addprevious(element._element)
+
+    def remove(self):
+        self._p.getparent().remove(self._p)
