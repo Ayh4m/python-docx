@@ -188,7 +188,6 @@ class Run(Parented):
         self.font.bold = bold
         self.font.italic = italic
         self.font.underline = underline
-        return self
 
 
 class _Text(object):
