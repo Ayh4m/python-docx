@@ -476,6 +476,14 @@ class _Row(Parented):
         self._tr.trHeight_hRule = value
 
     @property
+    def cant_split(self):
+        return self._tr.cant_split
+
+    @cant_split.setter
+    def cant_split(self, value):
+        self._tr.cant_split = value
+
+    @property
     def table(self):
         """
         Reference to the |Table| object this row belongs to.

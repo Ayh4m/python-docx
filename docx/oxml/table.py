@@ -90,6 +90,18 @@ class CT_Row(BaseOxmlElement):
         trPr = self.get_or_add_trPr()
         trPr.trHeight_val = value
 
+    @property
+    def cant_split(self):
+        trPr = self.trPr
+        if trPr is None:
+            return False
+        return trPr.cant_split
+
+    @cant_split.setter
+    def cant_split(self, value):
+        trPr = self.get_or_add_trPr()
+        trPr.cant_split = value
+
     def _insert_tblPrEx(self, tblPrEx):
         self.insert(0, tblPrEx)
 
@@ -858,8 +870,20 @@ class CT_TrPr(BaseOxmlElement):
         'w:tblCellSpacing', 'w:jc', 'w:hidden', 'w:ins', 'w:del',
         'w:trPrChange'
     )
+    cantSplit = ZeroOrOne('w:cantSplit', successors=_tag_seq[7:])
     trHeight = ZeroOrOne('w:trHeight', successors=_tag_seq[8:])
     del _tag_seq
+
+    @property
+    def cant_split(self):
+        """
+        Return |True| if `w:cantSplit` present, else |False|.
+        """
+        return True if self.cantSplit is not None else False
+
+    @cant_split.setter
+    def cant_split(self, value):
+        self._add_cantSplit() if value else self._remove_cantSplit()
 
     @property
     def trHeight_hRule(self):
@@ -957,3 +981,7 @@ class CT_Shd(BaseOxmlElement):
     val = OptionalAttribute('w:val', ST_String)
     color = OptionalAttribute('w:color', ST_String)
     fill = OptionalAttribute('w:fill', ST_String)
+
+
+class CT_CantSplit(BaseOxmlElement):
+    pass

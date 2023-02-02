@@ -168,7 +168,8 @@ from .table import (  # noqa
     CT_TcBottomBorder,
     CT_TcLeftBorder,
     CT_TcRightBorder,
-    CT_Shd
+    CT_Shd,
+    CT_CantSplit
 )
 register_element_cls('w:bidiVisual', CT_OnOff)
 register_element_cls('w:gridCol',    CT_TblGridCol)
@@ -192,7 +193,7 @@ register_element_cls('w:bottom',     CT_TcBottomBorder)
 register_element_cls('w:start',      CT_TcLeftBorder)
 register_element_cls('w:end',        CT_TcRightBorder)
 register_element_cls('w:shd',        CT_Shd)
-
+register_element_cls('w:cantSplit',  CT_CantSplit)
 
 from .text.font import (  # noqa
     CT_Color,
