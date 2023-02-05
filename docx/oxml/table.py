@@ -520,6 +520,18 @@ class CT_Tc(BaseOxmlElement):
         tcPr = self.get_or_add_tcPr()
         tcPr.width = value
 
+    @property
+    def shading_fill(self):
+        tcPr = self.tcPr
+        if tcPr is None:
+            return None
+        return tcPr.shading_fill
+
+    @shading_fill.setter
+    def shading_fill(self, value):
+        tcPr = self.get_or_add_tcPr()
+        tcPr.shading_fill = value
+
     def _add_width_of(self, other_tc):
         """
         Add the width of *other_tc* to this cell. Does nothing if either this
@@ -852,7 +864,7 @@ class CT_TcPr(BaseOxmlElement):
         shading = self.shading
         if shading is None:
             return None
-        return self.shading.fill
+        return shading.fill
 
     @shading_fill.setter
     def shading_fill(self, value):

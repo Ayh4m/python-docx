@@ -342,11 +342,11 @@ class _Cell(BlockItemContainer):
 
     @property
     def shading_fill(self):
-        return self._tc.get_or_add_tcPr().shading_fill
+        return self._tc.shading_fill
 
     @shading_fill.setter
     def shading_fill(self, value):
-        self._tc.get_or_add_tcPr().shading_fill = str(RGBColor(*value))
+        self._tc.shading_fill = str(RGBColor(*value))
 
 
 class _Column(Parented):
