@@ -35,6 +35,14 @@ class CT_P(BaseOxmlElement):
         self.addnext(new_p)
         return new_p
 
+    def get_previous_p(self):
+        element = self.getprevious()
+        return element if element.tag == qn('w:p') else None
+
+    def get_next_p(self):
+        element = self.getnext()
+        return element if element.tag == qn('w:p') else None
+
     @property
     def alignment(self):
         """
