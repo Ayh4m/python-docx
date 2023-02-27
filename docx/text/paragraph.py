@@ -168,6 +168,20 @@ class Paragraph(Parented):
         self.clear()
         self.add_run(text)
 
+    @property
+    def previous_paragraph(self):
+        p = self._p.get_previous_p()
+        if p is not None:
+            return Paragraph(p, self._parent)
+        return None
+
+    @property
+    def next_paragraph(self):
+        p = self._p.get_next_p()
+        if p is not None:
+            return Paragraph(p, self._parent)
+        return None
+
     def _insert_paragraph_before(self):
         """
         Return a newly created paragraph, inserted directly before this
@@ -192,3 +206,31 @@ class Paragraph(Parented):
 
     def remove(self):
         self._p.getparent().remove(self._p)
+
+    def remove_previous_paragraph(self):
+        p = self._p.get_previous_p()
+        if p is not None:
+            p.getparent().remove(p)
+
+    def remove_previous_paragraphs(self, count):
+        counter = 0
+        p = self._p.get_previous_p()
+        while p is not None and counter < count:
+            counter += 1
+            _p = p.get_previous_p()
+            p.getparent().remove(p)
+            p = _p
+
+    def remove_next_paragraph(self):
+        p = self._p.get_next_p()
+        if p is not None:
+            p.getparent().remove(p)
+
+    def remove_next_paragraphs(self, count):
+        counter = 0
+        p = self._p.get_next_p()
+        while p is not None and counter < count:
+            counter += 1
+            _p = p.get_next_p()
+            p.getparent().remove(p)
+            p = _p
